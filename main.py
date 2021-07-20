@@ -26,8 +26,9 @@ class App:
         self._lessonScreen = None
         self._currentScreen = self._menuScreen
 
-        # set tracker for drawing the contents
+        # set tracker for drawing the contents and render once
         self._render = True
+        self._onRender()
 
 
 
@@ -39,11 +40,15 @@ class App:
             #  1. if should end simulation
             #  2. if should redraw
             #  3. id of lesson to load ("" for not doing anything, "menu" for switching to menu)
-            shouldEnd, self._render, lessonId = self._currentScreen.onEvent(event)
+            shouldEnd, shouldRender, lessonId = self._currentScreen.onEvent(event)
 
             # check if event type is for quitting
             if shouldEnd or (event.type==pygame.QUIT):
                 self._running = False
+
+            # check if new render was called for
+            if shouldRender:
+                self._render = True
 
             # check for loading menu or lesson
             if lessonId == "":

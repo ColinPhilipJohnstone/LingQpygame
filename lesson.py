@@ -1,4 +1,4 @@
-from params import params
+from parameters import params
 import pygame
 
 class Lesson:
