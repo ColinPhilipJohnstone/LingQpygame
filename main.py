@@ -28,7 +28,10 @@ class App:
 
         # set tracker for drawing the contents and render once
         self._render = True
+        self._lessonScreen = lesson.Lesson("388663") # TEST
+        self._currentScreen = self._lessonScreen # TEST
         self._onRender()
+
 
 
 
@@ -50,7 +53,6 @@ class App:
             if shouldRender:
                 self._render = True
 
-            print("lessonId = ",lessonId)
             # check for loading menu or lesson
             if lessonId == "":
                 pass

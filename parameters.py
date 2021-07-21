@@ -22,4 +22,6 @@ params["MENU_LESSON_BUTTON_COLOR"] = (240,255,255)       # button color for menu
 params["EXIT_BUTTON_SCALING"] = 0.1     # size of exit button relative to image size 
 params["ARROW_BUTTON_SCALING"] = 0.15   # size of arrows relative to image sizes
 
+params["LESSON_BACKGROUND_COLOR"] = (178,190,189)   # background color for the lesson
+
 # params[""] =        #

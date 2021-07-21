@@ -2,7 +2,7 @@
 from parameters import params
 import pygame
 import lingqAPI as api
-
+import buttons
 
 def dict_to_list(dictIn):
   '''Takes dictionary, returns list of items in dictionary.'''
@@ -144,18 +144,69 @@ class Lesson:
 
 
 
+    def setup_lesson_hud(self):
 
-        
+        # Navigation buttons
+        self._leftButton = buttons.ImageButton((params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),"data/backward_arrow_icon.png",scale=params["ARROW_BUTTON_SCALING"],centered=True)
+        self._rightButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),"data/forward_arrow_icon.png",scale=params["ARROW_BUTTON_SCALING"],centered=True)
+        self._finishButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-params["MARGIN_HEIGHT"]/2.0),"data/tick_icon.png",scale=params["EXIT_BUTTON_SCALING"],centered=True)
+        self._exitButton = buttons.ImageButton((10,10),"data/close_icon.png",scale=params["EXIT_BUTTON_SCALING"] )
+
+        return 
+
+
+    def shouldDrawLeft(self):
+        '''Determines if the left arrow should be present'''
+        return True
+
+    def shouldDrawRight(self):
+        '''Determines if the right arrow should be present'''
+        return True
+
+    def shouldDrawFinish(self):
+        '''Determines if the finish symbol should be present'''
+        return True
+
+    def shouldDrawExit(self):
+        '''Determines if the exit symbol should be present'''
+        return True
 
     def onEvent(self,event):
         '''Handles what to do when something happens'''
 
-        return true
+        # initially assume should output (should not end, should not redraw, should not change page)
+        shouldEnd, shouldRender, loadLessonId = False, False, ""
+
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+
+            # test for exit button to go back to menu
+            if self._exitButton.isIn(pos):
+                return shouldEnd, True, "menu"
+
+        return shouldEnd, shouldRender, loadLessonId
     
+
+
+
     def onRender(self,window):
 
         # background
-        window.fill(params["MENU_BACKGROUND_COLOR"])
+        window.fill(params["LESSON_BACKGROUND_COLOR"])
+
+        # draw navigation buttons
+        if self.shouldDrawLeft():
+            self._leftButton.draw(window)
+        
+        if self.shouldDrawRight():
+            self._rightButton.draw(window)
+        
+        if self.shouldDrawFinish():
+            self._finishButton.draw(window)
+        
+        if self.shouldDrawExit():
+            self._exitButton.draw(window)
 
         # update display
         pygame.display.update()
