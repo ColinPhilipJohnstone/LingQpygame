@@ -50,6 +50,7 @@ class App:
             if shouldRender:
                 self._render = True
 
+            print("lessonId = ",lessonId)
             # check for loading menu or lesson
             if lessonId == "":
                 pass

@@ -120,7 +120,7 @@ class Menu:
                 for lesson in self.pagesLesson[self.pageLessonCurrent]:
                     if lesson["button"].isIn(pos):
                         print(lesson['title'])
-                        return shouldEnd, True, loadLessonId
+                        return shouldEnd, True, lesson["id"]
 
             # test for up and down navigation buttons
             if self.shouldDrawUp() and self._upButton.isIn(pos):

@@ -17,7 +17,9 @@ class Lesson:
 
     def __init__(self,lessonId):
         '''Sets up a lesson'''
-                
+        
+        print("loading lesson",lessonId)
+
         # Save lesson id
         self.lessonId = lessonId
         
