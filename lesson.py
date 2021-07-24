@@ -30,8 +30,6 @@ class Lesson:
         api.GetLingQHintsList(self.unknownList)
         api.GetLingQHintsList(dict_to_list(self.lingqsDict))
         
-        print(self.text)
-
         # setup text
         self.pageWordList = self.setup_lesson_text()
         self.nPages = len(self.pageWordList)
@@ -52,7 +50,6 @@ class Lesson:
         self.BubbleTimer = 0            # make bubble timer as 0
         
         return
-  
 
     def setup_lesson_text(self):
         '''Sets up the text for a lesson'''

@@ -1,17 +1,33 @@
 
 import pygame
 
-class Button(pygame.sprite.Sprite):
+class TextButton():
+    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None):
+        '''Takes text string, fontsize, and position and returns button object'''
 
-    def __init__(self):
-        '''Sets up button sprite'''
+        # save input parameters
+        self.pos = pos
+        self.text = text
+        self.fontsize = fontsize
 
-        super().__init__()
-        
-        # set position and size
+        # get image and other parameters
+        font = pygame.font.SysFont("Arial",fontsize,italic=italic,bold=bold)
+        self.image = font.render(text,True,color)
+        self.size = (self.image.get_width(), self.image.get_height())
+
+        # set x and y position and size variables
         self.xPos , self.yPos = self.pos
         self.xSize , self.ySize = self.size
         self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
+
+        # setup background rectangle if desired
+        self.drawBackground = False
+        if backgroundColor is not None:
+            self.drawBackground = True
+            self.backgroundColor = backgroundColor
+            self.backgroundRect = pygame.rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
@@ -21,21 +37,12 @@ class Button(pygame.sprite.Sprite):
 
     def draw(self,surface):
         '''Draws button to a given surface'''
+        if self.drawBackground:
+            pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)
         surface.blit(self.image,(self.xPos,self.yPos))
 
 
-class TextButton(Button):
-    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0)):
-        '''Takes text string, fontsize, and position and returns button object'''
-
-        self.pos = pos
-        font = pygame.font.SysFont("Arial",fontsize,italic=italic,bold=bold)
-        self.image = font.render(text,True,color)
-        self.size = (self.image.get_width(), self.image.get_height())
-
-        super().__init__()
-
-class ImageButton(Button):
+class ImageButton():
     def __init__(self,pos,filename,size=None,scale=None,centered=False):
         '''Takes filename of image and returns button object for image'''
 
@@ -61,4 +68,17 @@ class ImageButton(Button):
         if centered:
             self.pos = ( int(self.pos[0]-self.size[0]/2.0) , int(self.pos[1]-self.size[1]/2.0) )
 
-        super().__init__()
+        # set x and y position and size variables
+        self.xPos , self.yPos = self.pos
+        self.xSize , self.ySize = self.size
+        self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
+
+    def isIn(self,pos):
+        '''Takes position tuple in format (x,y) and returns if this is in this button'''
+        isInX = (pos[0] >= self.xPos) and (pos[0] <= self.xPos2)
+        isInY = (pos[1] >= self.yPos) and (pos[1] <= self.yPos2) 
+        return (isInX and isInY)
+
+    def draw(self,surface):
+        '''Draws button to a given surface'''
+        surface.blit(self.image,(self.xPos,self.yPos))
