@@ -43,23 +43,13 @@ class Lesson:
         # setup HUD on page
         self.setup_lesson_hud()
         
-        # start on first page
-        self.nPageCurrent = 0
-        
-        # assume no bubble to display
-        self.displayBubble = None
-        
-        # assume not showing the hud
-        self.showHud = False
-        
-        # assuming not clicking change status button
-        self.clickingStatus = False
-        
-        # assume no word select box to display 
-        self.wordSelectBox = None
-        
-        # make bubble timer as 0
-        self.BubbleTimer = 0
+        # setup initial state
+        self.nPageCurrent = 0           # start on first page
+        self.displayBubble = None       # assume no bubble to display
+        self.showHud = False            # assume not showing the hud
+        self.clickingStatus = False     # assuming not clicking change status button
+        self.wordSelectBox = None       # assume no word select box to display 
+        self.BubbleTimer = 0            # make bubble timer as 0
         
         return
   
