@@ -22,6 +22,15 @@ params["MENU_LESSON_BUTTON_COLOR"] = (240,255,255)       # button color for menu
 params["EXIT_BUTTON_SCALING"] = 0.1     # size of exit button relative to image size 
 params["ARROW_BUTTON_SCALING"] = 0.15   # size of arrows relative to image sizes
 
+
+# Lesson text
+params["FONT_SIZE"] = 20    # font size for lesson text
+params["LINE_SPACE"] = 40   # line spacing for lesson text
+params["PARAGRAPH_SPACE"] = int(params["LINE_SPACE"]*1.5) # paragraph spacing for lesson text
+params["PARAGRAPH_STRING"] = '</p>' # string to indicate paragraph breaks
+
+
+# Lesson layout
 params["LESSON_BACKGROUND_COLOR"] = (178,190,189)   # background color for the lesson
 
 # params[""] =        #

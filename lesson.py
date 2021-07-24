@@ -20,45 +20,45 @@ class Lesson:
         
         print("loading lesson",lessonId)
 
-        # Save lesson id
+        # save lesson id
         self.lessonId = lessonId
         
-        # Load full text , LingQs, unknownwords
+        # load full text, LingQs, unknown words, and hints
         self.text = api.GetText(lessonId)
         self.lingqsDict , self.lingqs = api.GetLingQs(lessonId)
         self.unknownList , self.unknownIdDict = api.GetUnknownWords(lessonId)
-        
-        # Get hints for unknown words and for LingQs
         api.GetLingQHintsList(self.unknownList)
         api.GetLingQHintsList(dict_to_list(self.lingqsDict))
         
-        # Setup text
+        print(self.text)
+
+        # setup text
         self.page_word_list = self.setup_lesson_text()
         self.nPages = len(self.page_word_list)
         
-        # Setup LingQs and unknown
+        # setup LingQs and unknown
         # self.page_lingq_list = self.setup_lingqs()
         # self.page_unknown_list = self.setup_unknown()
         
-        # Setup HUD on page
+        # setup HUD on page
         self.setup_lesson_hud()
         
-        # Start on first page
+        # start on first page
         self.nPageCurrent = 0
         
-        # Assume no bubble to display
+        # assume no bubble to display
         self.displayBubble = None
         
-        # Assume not showing the hud
+        # assume not showing the hud
         self.showHud = False
         
-        # Assuming not clicking change status button
+        # assuming not clicking change status button
         self.clickingStatus = False
         
-        # Assume no word select box to display 
+        # assume no word select box to display 
         self.wordSelectBox = None
         
-        # Make bubble timer as 0
+        # make bubble timer as 0
         self.BubbleTimer = 0
         
         return
@@ -67,86 +67,65 @@ class Lesson:
     def setup_lesson_text(self):
         '''Sets up the text for a lesson'''
 
-        # Start list of word lists for each page
-        page_word_list = []
+        # start list of word lists for each page
+        wordList = []       # list of words for a given page
+        pageWordList = []   # list of list of words for all pages
         
-        # Get list of words
+        # get list of words
         words = self.text.split()
+                
+        # width of a space
+        spaceButton = buttons.TextButton((0,0),' ',params["FONT_SIZE"])
+        spaceWidth = spaceButton.xSize
         
-        # Position of first word
+        # loop over all words in the text
         xLeft = params['MARGIN_WIDTH']
-        yCenter = params['WINDOW_HEIGHT']-params['MARGIN_HEIGHT']
+        yTop = params['MARGIN_HEIGHT']
+        nPage = 0
+        for word in words:
         
-        # # Width of page
-        # space_image = get_text_image(text=' ')
-        # SPACE_WIDTH = space_image.width
-        
-        # # Make a first word list
-        # word_list = arcade.SpriteList()
-        
-        # # Start page counter
-        # nPage = 0
-        
-        # # Loop over all words in the text
-        # for word in words:
-        
-        #   # Check if this word is a paragraph indicator
-        #   if word == PARAGRAPH_STRING:
-        #     xLeft = MARGIN_WIDTH
-        #     yCenter += -PARAGRAPH_SPACE
-        #     continue
-        
-        #   # Made image out of word
-        #   image = get_text_image(text=word)
-        
-        #   # Make sprite from image
-        #   word_sprite = WordSprite()
-        #   word_sprite.SetWord(word)
-        #   word_sprite._texture = arcade.Texture(word)
-        #   word_sprite.texture.image = image
-        #   word_sprite.width = image.width
-        #   word_sprite.height = image.height
-        
-        #   # Check if need to move to next line
-        #   word_right = xLeft + word_sprite.width
-        #   if ( word_right > SCREEN_WIDTH-MARGIN_WIDTH ):
-        #     xLeft = MARGIN_WIDTH
-        #     yCenter += -LINE_SPACE
-        
-        #   # Check if need to move to next page
-        #   if yCenter < MARGIN_HEIGHT:
+            # check if this word is a paragraph indicator
+            if word == params["PARAGRAPH_STRING"]:
+                xLeft = params['MARGIN_WIDTH']
+                yTop += params["PARAGRAPH_SPACE"]
+                continue
             
-        #     # Save this word list
-        #     page_word_list.append(word_list)
+            # get word button
+            wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
+        
+            # check if need to move to next line and regenerate button if so
+            wordRight = xLeft + wordButton.xSize
+            if ( wordRight > params["WINDOW_WIDTH"]-params['MARGIN_WIDTH'] ):
+                xLeft = params['MARGIN_WIDTH']
+                yTop += params['LINE_SPACE']
+                wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
+
+            # check if need to move to next page
+            if yTop > params["WINDOW_HEIGHT"]-params['MARGIN_HEIGHT']:
+                
+                # save this word list and start new one for next page
+                pageWordList.append(wordList)
+                wordList = []
+                
+                # reset positions for next page and regenerate word with new position
+                xLeft = params['MARGIN_WIDTH']
+                yTop = params['MARGIN_HEIGHT']
+                wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
             
-        #     # Start new word list
-        #     word_list = arcade.SpriteList()
+            # Add word to word list
+            wordList.append(wordButton)
             
-        #     # Reset positions for next page
-        #     xLeft = MARGIN_WIDTH
-        #     yCenter = SCREEN_HEIGHT-MARGIN_HEIGHT
+            # Update x position
+            xLeft += wordButton.xSize + spaceWidth
         
-        #   # Set position of word
-        #   word_sprite.center_x = xLeft + word_sprite.width / 2
-        #   word_sprite.center_y = yCenter
+        # add final page
+        pageWordList.append(wordList)
         
-        #   # Add word to word list
-        #   word_list.append(word_sprite)
-        
-        #   # Update x position
-        #   xLeft += word_sprite.width + SPACE_WIDTH
-        
-        # # Add final page
-        # page_word_list.append(word_list)
-        
-        return page_word_list
+        return pageWordList
     
-
-
-
     def setup_lesson_hud(self):
 
-        # Navigation buttons
+        # navigation buttons
         self._leftButton = buttons.ImageButton((params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),"data/backward_arrow_icon.png",scale=params["ARROW_BUTTON_SCALING"],centered=True)
         self._rightButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),"data/forward_arrow_icon.png",scale=params["ARROW_BUTTON_SCALING"],centered=True)
         self._finishButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-params["MARGIN_HEIGHT"]/2.0),"data/tick_icon.png",scale=params["EXIT_BUTTON_SCALING"],centered=True)
