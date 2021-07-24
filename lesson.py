@@ -78,7 +78,7 @@ class Lesson:
                 continue
             
             # get word button
-            wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
+            wordButton = buttons.Word((xLeft,yTop),word,status=None)
         
             # check if need to move to next line 
             wordRight = xLeft + wordButton.xSize

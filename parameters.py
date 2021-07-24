@@ -27,6 +27,7 @@ params["LINGQ_HIGHLIGHT_COLOR_1"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_2"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_3"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_4"] = (255,255,0)
+params["UNKNOWN_HIGHLIGHT_COLOR"] = (172,229,238)
 
 # lesson text
 params["FONT_SIZE"] = 20    # font size for lesson text
