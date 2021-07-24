@@ -77,8 +77,15 @@ class Lesson:
                 yTop += params["PARAGRAPH_SPACE"]
                 continue
             
+            # determine if lingq or unknown
+            status = None
+            if word in self.unknownList:
+                status = 'unknown'
+            elif word in self.lingqs:
+                status = 'lingq'
+
             # get word button
-            wordButton = buttons.Word((xLeft,yTop),word,status=None)
+            wordButton = buttons.Word((xLeft,yTop),word,status=status)
         
             # check if need to move to next line 
             wordRight = xLeft + wordButton.xSize
