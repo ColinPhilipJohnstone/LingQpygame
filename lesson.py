@@ -33,8 +33,8 @@ class Lesson:
         print(self.text)
 
         # setup text
-        self.page_word_list = self.setup_lesson_text()
-        self.nPages = len(self.page_word_list)
+        self.pageWordList = self.setup_lesson_text()
+        self.nPages = len(self.pageWordList)
         
         # setup LingQs and unknown
         # self.page_lingq_list = self.setup_lingqs()
@@ -173,6 +173,10 @@ class Lesson:
 
         # background
         window.fill(params["LESSON_BACKGROUND_COLOR"])
+
+        # draw words of current page
+        for word in self.pageWordList[self.nPageCurrent]:
+            word.draw(window)
 
         # draw navigation buttons
         if self.shouldDrawLeft():
