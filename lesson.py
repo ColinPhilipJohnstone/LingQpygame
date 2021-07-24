@@ -102,10 +102,10 @@ class Lesson:
                 yTop = params['MARGIN_HEIGHT']
                 wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
             
-            # Add word to word list
+            # add word to word list
             wordList.append(wordButton)
             
-            # Update x position
+            # Uupdate x position
             xLeft += wordButton.xSize + spaceWidth
         
         # add final page
@@ -149,6 +149,16 @@ class Lesson:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
+
+            # test for back a page
+            if self._leftButton.isIn(pos):
+                self.nPageCurrent = max(0,self.nPageCurrent-1)
+                return shouldEnd, True, loadLessonId
+
+            # test for forward a page
+            if self._rightButton.isIn(pos):
+                self.nPageCurrent = min(self.nPages-1,self.nPageCurrent+1)
+                return shouldEnd, True, loadLessonId
 
             # test for exit button to go back to menu
             if self._exitButton.isIn(pos):
