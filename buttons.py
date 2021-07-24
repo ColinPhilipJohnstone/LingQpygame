@@ -27,7 +27,13 @@ class TextButton():
             self.backgroundColor = backgroundColor
             self.backgroundRect = pygame.rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
-
+    def move(self,pos):
+        '''Moves button to a new position'''
+        self.pos = pos
+        self.xPos , self.yPos = self.pos
+        self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
+        if self.drawBackground:
+            self.backgroundRect = pygame.rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''

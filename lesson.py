@@ -80,12 +80,12 @@ class Lesson:
             # get word button
             wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
         
-            # check if need to move to next line and regenerate button if so
+            # check if need to move to next line 
             wordRight = xLeft + wordButton.xSize
             if ( wordRight > params["WINDOW_WIDTH"]-params['MARGIN_WIDTH'] ):
                 xLeft = params['MARGIN_WIDTH']
                 yTop += params['LINE_SPACE']
-                wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
+                wordButton.move((xLeft,yTop))
 
             # check if need to move to next page
             if yTop > params["WINDOW_HEIGHT"]-params['MARGIN_HEIGHT']:
@@ -94,10 +94,10 @@ class Lesson:
                 pageWordList.append(wordList)
                 wordList = []
                 
-                # reset positions for next page and regenerate word with new position
+                # reset positions for next page and move word to start of next page
                 xLeft = params['MARGIN_WIDTH']
                 yTop = params['MARGIN_HEIGHT']
-                wordButton = buttons.TextButton((xLeft,yTop),word,params["FONT_SIZE"])
+                wordButton.move((xLeft,yTop))
             
             # add word to word list
             wordList.append(wordButton)
