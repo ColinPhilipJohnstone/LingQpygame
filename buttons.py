@@ -283,7 +283,6 @@ class WordBubble():
         self.outlineWidth = params["BUBBLE_OUTLINE_WIDTH"]
         self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
-
     def getBubblePosition(self):
         '''Gets position of top left corner of bubble'''
 
@@ -310,7 +309,21 @@ class WordBubble():
 
         return xPos, yPos
 
+    def getBubbleContents(self):
+        '''Gets contents of a bubble'''
+        if self.word.status == 'lingq':
+            self.getBubbleContentsLingq()
+        else:
+            self.getBubbleContentsUnknown
+            
+    def getBubbleContentsLingq(self):
+        '''Gets contents of a bubble for a lingq'''
+        pass
+            
 
+    def getBubbleContentsUnknown(self):
+        '''Gets contents of a bubble for an unknown word'''
+        pass
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
