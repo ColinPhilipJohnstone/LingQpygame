@@ -178,15 +178,17 @@ def GetLingQs(contentId):
   # Get LingQs
   lingqs = r.json()
   
-  # Get dictionary with each term and index in list of LingQ for this term
+  # Get list of all lingq terms and dictionary for each lingq
+  linqsList = []
   lingqsDict = {}
   index = 0
   for lingq in lingqs:
     term = lingq['term']
-    lingqsDict[term] = index
+    linqsList.append(term)
+    lingqsDict[term] = lingq
     index += 1
   
-  return lingqsDict , lingqs
+  return linqsList, lingqsDict
 
 #=====================================================================================
 

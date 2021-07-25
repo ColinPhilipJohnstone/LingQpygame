@@ -22,4 +22,21 @@ params["MENU_LESSON_BUTTON_COLOR"] = (240,255,255)       # button color for menu
 params["EXIT_BUTTON_SCALING"] = 0.1     # size of exit button relative to image size 
 params["ARROW_BUTTON_SCALING"] = 0.15   # size of arrows relative to image sizes
 
+# word highlighting options
+params["LINGQ_HIGHLIGHT_COLOR_1"] = (255,255,0)
+params["LINGQ_HIGHLIGHT_COLOR_2"] = (255,255,0)
+params["LINGQ_HIGHLIGHT_COLOR_3"] = (255,255,0)
+params["LINGQ_HIGHLIGHT_COLOR_4"] = (255,255,0)
+params["UNKNOWN_HIGHLIGHT_COLOR"] = (172,229,238)
+
+# lesson text
+params["FONT_SIZE"] = 20    # font size for lesson text
+params["LINE_SPACE"] = 40   # line spacing for lesson text
+params["PARAGRAPH_SPACE"] = int(params["LINE_SPACE"]*1.5) # paragraph spacing for lesson text
+params["PARAGRAPH_STRING"] = '</p>' # string to indicate paragraph breaks
+
+
+# lesson layout
+params["LESSON_BACKGROUND_COLOR"] = (178,190,189)   # background color for the lesson
+
 # params[""] =        #

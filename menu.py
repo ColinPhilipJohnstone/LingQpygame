@@ -99,7 +99,10 @@ class Menu:
     def onEvent(self,event):
         '''Handles what to do when something happens'''
 
-        continueRunning = True
+        # initially assume should output (should not end, should not redraw, should not change page)
+        shouldEnd, shouldRender, loadLessonId = False, False, ""
+
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
 
@@ -110,14 +113,14 @@ class Menu:
                         self.initLessonMenu(course)
                         self.inLessonMenu = True
                         self.courseIdLoaded = course["id"]
-                        return continueRunning
+                        return shouldEnd, True, loadLessonId
 
             # get if clicked on lesson
             if self.inLessonMenu:
                 for lesson in self.pagesLesson[self.pageLessonCurrent]:
                     if lesson["button"].isIn(pos):
                         print(lesson['title'])
-                        return continueRunning
+                        return shouldEnd, True, lesson["id"]
 
             # test for up and down navigation buttons
             if self.shouldDrawUp() and self._upButton.isIn(pos):
@@ -125,32 +128,32 @@ class Menu:
                     self.pageCourseCurrent = max(0,self.pageCourseCurrent-1)
                 else:
                     self.pageLessonCurrent = max(0,self.pageLessonCurrent-1)
-                return continueRunning
+                return shouldEnd, True, loadLessonId
 
             if self.shouldDrawDown() and self._downButton.isIn(pos):
                 if not self.inLessonMenu:
                     self.pageCourseCurrent = min(self.nPagesCourse-1,self.pageCourseCurrent+1)
                 else:
                     self.pageLessonCurrent = min(self.nPagesCourse-1,self.pageLessonCurrent+1)
-                return continueRunning
+                return shouldEnd, True, loadLessonId
 
             # test for going back to the course menu
             if self.inLessonMenu:
                 if self._leftButton.isIn(pos):
                     self.inLessonMenu = False
-                    return continueRunning
+                    return shouldEnd, True, loadLessonId
             
             # test for going back to the lesson menu if a lesson had already been loaded
             if (not self.inLessonMenu) and (not self.courseIdLoaded == ""):
                 if self._rightButton.isIn(pos):
                     self.inLessonMenu = True
-                    return continueRunning
+                    return shouldEnd, True, loadLessonId
 
             # test for exit button
             if self._exitButton.isIn(pos):
-                continueRunning = False
+                return True, shouldRender, loadLessonId
 
-        return continueRunning
+        return shouldEnd, shouldRender, loadLessonId
     
     def onRender(self,window):
 
