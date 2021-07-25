@@ -329,11 +329,12 @@ class WordBubble():
             yPosHint += params['BUBBLE_HINT_SPACING']
 
         # X button
-        xPosX = self.xPos2-params['BUBBLE_MARGIN']
+        xPosX = self.xPos2-params['BUBBLE_MARGIN']-params["BUBBLE_STATUS_WIDTH"]
         yPosX = self.yPos2-params['BUBBLE_MARGIN']-params["BUBBLE_STATUS_HEIGHT"]
         xButton = TextButton(  (xPosX,yPosX),
                                 "X",
                                 params["BUBBLE_STATUS_FONTSIZE"],
+                                backgroundColor = params["HINT_BACKGROUND_COLOR"],
                                 outlineColor=params["HINT_OUTLINE_COLOR"],
                                 outlineThick=params["HINT_OUTLINE_THICK"],
                                 backgroundSize=(params["BUBBLE_STATUS_WIDTH"],params["BUBBLE_STATUS_HEIGHT"]))
@@ -345,6 +346,7 @@ class WordBubble():
         kButton = TextButton(  (xPosK,yPosK),
                                 "K",
                                 params["BUBBLE_STATUS_FONTSIZE"],
+                                backgroundColor = params["HINT_BACKGROUND_COLOR"],
                                 outlineColor=params["HINT_OUTLINE_COLOR"],
                                 outlineThick=params["HINT_OUTLINE_THICK"],
                                 backgroundSize=(params["BUBBLE_STATUS_WIDTH"],params["BUBBLE_STATUS_HEIGHT"]))
