@@ -204,18 +204,6 @@ class Lesson:
             if self.showHudButton.isIn(pos):
                 self.showHud = not self.showHud
                 return shouldEnd, True, loadLessonId
-
-            # # test for one of the lingqs on the page
-            # for word in self.pageLingqList[self.nPageCurrent]:
-            #     if word.isIn(pos):
-            #         word.toogleSelected()
-            #         return shouldEnd, True, loadLessonId
-           
-            # # test for one of the unknown words on the page
-            # for word in self.pageUnknownList[self.nPageCurrent]:
-            #     if word.isIn(pos):
-            #         word.toogleSelected()
-            #         return shouldEnd, shouldRender, loadLessonId
            
             # test for one of the words on the page
             for word in self.pageWordList[self.nPageCurrent]:

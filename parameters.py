@@ -23,13 +23,14 @@ params["EXIT_BUTTON_SCALING"] = 0.1     # size of exit button relative to image 
 params["ARROW_BUTTON_SCALING"] = 0.15   # size of arrows relative to image sizes
 
 # word highlighting options
-params["LINGQ_HIGHLIGHT_COLOR_1"] = (255,255,0)
+params["LINGQ_HIGHLIGHT_COLOR_1"] = (255,255,0)     # color for lingq highlight background
 params["LINGQ_HIGHLIGHT_COLOR_2"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_3"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_4"] = (255,255,0)
-params["UNKNOWN_HIGHLIGHT_COLOR"] = (172,229,238)
-params["WORD_OUTLINE_COLOR"] = (255,0,0)
-params["WORD_OUTLINE_THICK"] = 2
+params["UNKNOWN_HIGHLIGHT_COLOR"] = (172,229,238)   # color for unknown word highlight background
+params["WORD_OUTLINE_COLOR"] = (255,0,0)            # color for outline of selected word
+params["WORD_OUTLINE_THICK"] = 2                    # thickness for outline of selected word
+params["WORD_HIGHLIGHT_SIZE_FACTOR"] = 1.05         # factor by which to increase the size of the word highlighting relative to text
 
 # lesson text
 params["FONT_SIZE"] = 20    # font size for lesson text

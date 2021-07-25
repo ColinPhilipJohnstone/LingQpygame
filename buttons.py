@@ -109,7 +109,7 @@ class InvisibleButton():
         pass
         
 class TextButton():
-    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,outlineColor=None,outlineThick=1):
+    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,outlineColor=None,outlineThick=1,backgroundSizeFactor=1.0):
         '''Takes text string, fontsize, and position and returns button object'''
 
         # save input parameters
@@ -134,7 +134,9 @@ class TextButton():
             self.hasBackground = True
             self.drawBackground = True
             self.backgroundColor = backgroundColor
-            self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+            dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
+            dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
+            self.backgroundRect = pygame.Rect(self.xPos-dx,self.yPos-dy,self.xSize+2*dx,self.ySize+2*dy)
 
         # setup outline if desired
         self.hasOutline = False
@@ -144,7 +146,9 @@ class TextButton():
             self.drawOutline = True
             self.outlineColor = outlineColor
             self.outlineThick = outlineThick
-            self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+            dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
+            dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
+            self.outlineRect = pygame.Rect(self.xPos-dx,self.yPos-dy,self.xSize+2*dx,self.ySize+2*dy)
 
     def move(self,pos):
         '''Moves button to a new position'''
@@ -185,7 +189,8 @@ class Word(TextButton):
                              text,params["FONT_SIZE"],
                              backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"],
                              outlineColor=params["WORD_OUTLINE_COLOR"],
-                             outlineThick=params["WORD_OUTLINE_THICK"])
+                             outlineThick=params["WORD_OUTLINE_THICK"],
+                             backgroundSizeFactor=params["WORD_HIGHLIGHT_SIZE_FACTOR"])
         elif status == "lingq":
             # make a lingq
             super().__init__(pos,
@@ -193,14 +198,16 @@ class Word(TextButton):
                              params["FONT_SIZE"],
                              backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"],
                              outlineColor=params["WORD_OUTLINE_COLOR"],
-                             outlineThick=params["WORD_OUTLINE_THICK"])
+                             outlineThick=params["WORD_OUTLINE_THICK"],
+                             backgroundSizeFactor=params["WORD_HIGHLIGHT_SIZE_FACTOR"])
         else:
             # just assume normal word
             super().__init__(pos,
                              text,
                              params["FONT_SIZE"],
                              outlineColor=params["WORD_OUTLINE_COLOR"],
-                             outlineThick=params["WORD_OUTLINE_THICK"])
+                             outlineThick=params["WORD_OUTLINE_THICK"],
+                             backgroundSizeFactor=params["WORD_HIGHLIGHT_SIZE_FACTOR"])
 
         # set not to show the outline first
         self.drawOutline = False
