@@ -46,6 +46,8 @@ params["BUBBLE_VERTICAL_SEPARATION"] = 0.2*params["LINE_SPACE"] # distance betwe
 params["BUBBLE_BACKGROUND_COLOR_LINGQ"] = (250,250,210)   # background color for bubble if lingq
 params["BUBBLE_BACKGROUND_COLOR_UNKNOWN"] = (178,255,255) # background color for bubble if unknown
 params["BUBBLE_BACKGROUND_COLOR_WORD"] = (178,255,255)    # background color for bubble if word
+params["BUBBLE_OUTLINE_COLOR"] = (0,0,0)    # color for bubble outline
+params["BUBBLE_OUTLINE_WIDTH"] = 2    # width of bubble outline
 
 
 # bubble contents 

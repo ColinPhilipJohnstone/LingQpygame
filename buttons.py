@@ -278,6 +278,12 @@ class WordBubble():
             self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_WORD"]
         self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
+        # get outline
+        self.outlineColor = params["BUBBLE_OUTLINE_COLOR"]
+        self.outlineWidth = params["BUBBLE_OUTLINE_WIDTH"]
+        self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+
     def getBubblePosition(self):
         '''Gets position of top left corner of bubble'''
 
@@ -315,3 +321,4 @@ class WordBubble():
     def draw(self,surface):
         '''Draws button to a given surface'''
         pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)
+        pygame.draw.rect(surface,self.outlineColor,self.outlineRect,self.outlineWidth)
