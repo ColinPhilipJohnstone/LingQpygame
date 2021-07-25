@@ -186,6 +186,14 @@ class Lesson:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
 
+            # if a word bubble is being shown and this click is outside its box then this should
+            # cause it to stop being displayed
+            if self.displayBubble:
+                if not self.bubble.isIn(pos):
+                    self.bubble.word.toogleSelected()
+                    self.displayBubble = False
+                    return shouldEnd, True, loadLessonId
+
             # test for back a page
             if self._leftButton.isIn(pos):
                 self.nPageCurrent = max(0,self.nPageCurrent-1)

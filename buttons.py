@@ -259,6 +259,9 @@ class WordBubble():
     def __init__(self,word):
         '''Takes a Word object and sets up the hint bubble for it'''
 
+        # save the corresponding word object
+        self.word = word
+
         # get position and size 
         self.xPos = 10
         self.yPos = 10
