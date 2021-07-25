@@ -181,13 +181,26 @@ class Word(TextButton):
         self.status = status
         if status == "unknown":
             # make an unknown word
-            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"],outlineColor=(0,0,0))
+            super().__init__(pos,
+                             text,params["FONT_SIZE"],
+                             backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"],
+                             outlineColor=params["WORD_OUTLINE_COLOR"],
+                             outlineThick=params["WORD_OUTLINE_THICK"])
         elif status == "lingq":
             # make a lingq
-            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"],outlineColor=(0,0,0))
+            super().__init__(pos,
+                             text,
+                             params["FONT_SIZE"],
+                             backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"],
+                             outlineColor=params["WORD_OUTLINE_COLOR"],
+                             outlineThick=params["WORD_OUTLINE_THICK"])
         else:
             # just assume normal word
-            super().__init__(pos,text,params["FONT_SIZE"],outlineColor=(0,0,0))
+            super().__init__(pos,
+                             text,
+                             params["FONT_SIZE"],
+                             outlineColor=params["WORD_OUTLINE_COLOR"],
+                             outlineThick=params["WORD_OUTLINE_THICK"])
 
         # set not to show the outline first
         self.drawOutline = False

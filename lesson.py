@@ -205,23 +205,24 @@ class Lesson:
                 self.showHud = not self.showHud
                 return shouldEnd, True, loadLessonId
 
-            # test for one of the lingqs on the page
-            for lingq in self.pageLingqList[self.nPageCurrent]:
-                if lingq.isIn(pos):
-                    lingq.toogleSelected()
-                    return shouldEnd, True, loadLessonId
+            # # test for one of the lingqs on the page
+            # for word in self.pageLingqList[self.nPageCurrent]:
+            #     if word.isIn(pos):
+            #         word.toogleSelected()
+            #         return shouldEnd, True, loadLessonId
            
-            # test for one of the unknown words on the page
-            for word in self.pageUnknownList[self.nPageCurrent]:
-                if word.isIn(pos):
-                    print("unknown: ",word.term)
-                    return shouldEnd, shouldRender, loadLessonId
+            # # test for one of the unknown words on the page
+            # for word in self.pageUnknownList[self.nPageCurrent]:
+            #     if word.isIn(pos):
+            #         word.toogleSelected()
+            #         return shouldEnd, shouldRender, loadLessonId
            
             # test for one of the words on the page
             for word in self.pageWordList[self.nPageCurrent]:
                 if word.isIn(pos):
-                    print("word: ",word.term)
-                    return shouldEnd, shouldRender, loadLessonId
+                    word.toogleSelected()
+
+                    return shouldEnd, True, loadLessonId
 
         return shouldEnd, shouldRender, loadLessonId
     
