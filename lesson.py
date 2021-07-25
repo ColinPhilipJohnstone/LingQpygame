@@ -192,7 +192,7 @@ class Lesson:
                 if not self.bubble.isIn(pos):
                     self.bubble.word.toogleSelected()
                     self.displayBubble = False
-                    return shouldEnd, True, loadLessonId
+                    shouldRender = True
 
             # test for back a page
             if self._leftButton.isIn(pos):
