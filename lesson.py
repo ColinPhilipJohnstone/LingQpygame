@@ -22,12 +22,8 @@ class Lesson:
         api.GetLingQHintsList(self.lingqList)
         
         # setup text
-        self.pageWordList = self.setup_lesson_text()
+        self.pageWordList, self.pageUnknownList, self.pageLingqList = self.setup_lesson_text()
         self.nPages = len(self.pageWordList)
-        
-        # setup LingQs and unknown
-        # self.page_lingq_list = self.setup_lingqs()
-        # self.page_unknown_list = self.setup_unknown()
         
         # setup HUD on page
         self.setup_lesson_hud()
@@ -54,8 +50,12 @@ class Lesson:
         '''Sets up the text for a lesson'''
 
         # start list of word lists for each page
-        wordList = []       # list of words for a given page
-        pageWordList = []   # list of list of words for all pages
+        wordList = []           # list of words for a given page
+        unknownList = []        # list of unknown words for a given page
+        lingqList = []          # list of lingqs for a given page
+        pageWordList = []       # list of list of words for all pages
+        pageUnknownList = []    # list of list of unknown words for all pages
+        pageLingqList = []      # list of list of lingqs for all pages
         
         # get list of words
         words = self.text.split()
@@ -98,7 +98,11 @@ class Lesson:
                 
                 # save this word list and start new one for next page
                 pageWordList.append(wordList)
+                pageUnknownList.append(unknownList)
+                pageLingqList.append(lingqList)
                 wordList = []
+                unknownList = []
+                lingqList = []
                 
                 # reset positions for next page and move word to start of next page
                 xLeft = params['MARGIN_WIDTH']
@@ -107,14 +111,20 @@ class Lesson:
             
             # add word to word list
             wordList.append(wordButton)
+            if status == 'unknown':
+                unknownList.append(wordButton)
+            elif status == 'lingq':
+                lingqList.append(wordButton)
             
             # Uupdate x position
             xLeft += wordButton.xSize + spaceWidth
         
         # add final page
         pageWordList.append(wordList)
+        pageUnknownList.append(unknownList)
+        pageLingqList.append(lingqList)
         
-        return pageWordList
+        return pageWordList, pageUnknownList, pageLingqList
     
     def setup_lesson_hud(self):
 
