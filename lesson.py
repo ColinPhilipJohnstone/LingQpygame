@@ -25,7 +25,7 @@ class Lesson:
         
         # load full text, LingQs, unknown words, and hints
         self.text = api.GetText(lessonId)
-        self.lingqsDict , self.lingqs = api.GetLingQs(lessonId)
+        self.lingqList , self.lingqs = api.GetLingQs(lessonId)
         self.unknownList , self.unknownIdDict = api.GetUnknownWords(lessonId)
         api.GetLingQHintsList(self.unknownList)
         api.GetLingQHintsList(dict_to_list(self.lingqsDict))
