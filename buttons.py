@@ -1,6 +1,7 @@
 
 import pygame
 from parameters import params
+import copy 
 
 class ImageButton():
     def __init__(self,pos,filename,size=None,scale=None,centered=False):
@@ -93,6 +94,9 @@ class Word(TextButton):
     def __init__(self,pos,text,status=None):
         '''Sets up word button either as a normal word, an unknown word, or a lingq'''
 
+        # save the basic term 
+        self.term = getTerm(text)
+
         # how to set it up depends entirely on the status
         self.status = status
         if status == "unknown":
@@ -105,4 +109,40 @@ class Word(TextButton):
             # just assume normal word
             super().__init__(pos,text,params["FONT_SIZE"])
 
-        
+def getTerm(string):
+  
+  """Takes string with word, returns string with punctuation removed and lowercase."""
+  
+  # Make sure there is at least one real letter in word and return -1 if not
+  isWord = False
+  for char in string:
+    if char.isalpha():
+      isWord = True
+  if not isWord:
+    return -1
+      
+  # Make deep copy of string 
+  word = copy.deepcopy(string)
+  
+  # Make word lower case
+  word = word.lower()
+  
+  # Check if need to shave characters off edges
+  if not ( word[0].isalpha() and word[-1].isalpha() ):
+    
+    # Loop forward and get first letter
+    for i in range(0,len(word),1):
+      if word[i].isalpha():
+        iStart = i
+        break
+    
+    # Loop backwards and get last letter
+    for i in range(len(word)-1,-1,-1):
+      if word[i].isalpha():
+        iEnd = i
+        break
+    
+    # Get new word
+    word = word[iStart:iEnd+1]
+  
+  return word

@@ -4,15 +4,6 @@ import pygame
 import lingqAPI as api
 import buttons
 
-def dict_to_list(dictIn):
-  '''Takes dictionary, returns list of items in dictionary.'''
-  listOut = []
-  for item in dictIn:
-    listOut.append(item)
-  return listOut
-
-
-
 class Lesson:
 
     def __init__(self,lessonId):
@@ -28,7 +19,7 @@ class Lesson:
         self.lingqList , self.lingqs = api.GetLingQs(lessonId)
         self.unknownList , self.unknownIdDict = api.GetUnknownWords(lessonId)
         api.GetLingQHintsList(self.unknownList)
-        api.GetLingQHintsList(dict_to_list(self.lingqsDict))
+        api.GetLingQHintsList(self.lingqList)
         
         # setup text
         self.pageWordList = self.setup_lesson_text()
@@ -51,14 +42,13 @@ class Lesson:
         
         return
 
-    def isUknown(self,word):
+    def isUnknown(self,word):
         '''Takes word string, returns if is unknown'''
-        word in self.unknownList
+        return buttons.getTerm(word) in self.unknownList
 
     def isLingq(self,word):
         '''Takes word string, returns if is lingq'''
-        word in self.unknownList
-
+        return buttons.getTerm(word) in self.lingqList
 
     def setup_lesson_text(self):
         '''Sets up the text for a lesson'''
@@ -88,7 +78,7 @@ class Lesson:
             
             # determine if lingq or unknown
             status = None
-            if self.isUknown(word):
+            if self.isUnknown(word):
                 status = 'unknown'
             elif self.isLingq(word):
                 status = 'lingq'
