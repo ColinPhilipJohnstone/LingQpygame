@@ -270,7 +270,12 @@ class WordBubble():
         self.yPos2 = self.yPos+self.ySize
 
         # get background rectangle
-        self.backgroundColor = (255,255,255)
+        if word.status == 'lingq':
+            self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_LINGQ"]
+        elif word.status == 'unknown':
+            self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_UNKNOWN"]
+        else:
+            self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_WORD"]
         self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
     def getBubblePosition(self):
@@ -289,7 +294,7 @@ class WordBubble():
             xPos = params["MARGIN_WIDTH"]
 
         # move bubble to left if off right side of screen
-        if xPos+params["BUBBLE_WIDTH"] > params["MARGIN_WIDTH"]:
+        if xPos+params["BUBBLE_WIDTH"] > params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]:
             xPos = params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]-params["BUBBLE_WIDTH"]
 
         # initially assume below word then move above word if too low

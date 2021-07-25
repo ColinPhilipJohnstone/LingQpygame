@@ -39,10 +39,16 @@ params["PARAGRAPH_SPACE"] = int(params["LINE_SPACE"]*1.5) # paragraph spacing fo
 params["PARAGRAPH_STRING"] = '</p>' # string to indicate paragraph breaks
 
 
-# bubble properties
+# basic bubble properties
 params["BUBBLE_WIDTH"] = int(params["WINDOW_WIDTH"]/1.7)    # width of bubble
 params["BUBBLE_HEIGHT"] = int(params["BUBBLE_WIDTH"]/1.8)   # height of bubble                
 params["BUBBLE_VERTICAL_SEPARATION"] = 0.2*params["LINE_SPACE"] # distance between top/bottom of bubble ant top/bottom of word
+params["BUBBLE_BACKGROUND_COLOR_LINGQ"] = (250,250,210)   # background color for bubble if lingq
+params["BUBBLE_BACKGROUND_COLOR_UNKNOWN"] = (178,255,255) # background color for bubble if unknown
+params["BUBBLE_BACKGROUND_COLOR_WORD"] = (178,255,255)    # background color for bubble if word
+
+
+# bubble contents 
 params["BUBBLE_MARGIN"] = int(params["BUBBLE_WIDTH"]/20.0)
 params["FONT_SIZE_BUBBLE_TERM"] = 20
 params["FONT_SIZE_BUBBLE_HINT"] = 15
