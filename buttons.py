@@ -263,16 +263,43 @@ class WordBubble():
         self.word = word
 
         # get position and size 
-        self.xPos = 10
-        self.yPos = 10
-        self.xSize = 100
-        self.ySize = 100
+        self.xSize = params["BUBBLE_WIDTH"]
+        self.ySize = params["BUBBLE_HEIGHT"]
+        self.xPos, self.yPos = self.getBubblePosition()
         self.xPos2 = self.xPos+self.xSize
         self.yPos2 = self.yPos+self.ySize
 
         # get background rectangle
         self.backgroundColor = (255,255,255)
         self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+    def getBubblePosition(self):
+        '''Gets position of top left corner of bubble'''
+
+        # determine x position
+
+        # initially assume to the right of the word so left side of bubble at middle point of word
+        # then check if it is too close to edge
+        xPos = self.word.xPos+0.5*self.word.xSize
+        if xPos+params["BUBBLE_WIDTH"] > 0.95*params["WINDOW_WIDTH"]:
+            xPos += -params["BUBBLE_WIDTH"]
+
+        # move bubble to right if off left side of screen
+        if xPos < params["MARGIN_WIDTH"]:
+            xPos = params["MARGIN_WIDTH"]
+
+        # move bubble to left if off right side of screen
+        if xPos+params["BUBBLE_WIDTH"] > params["MARGIN_WIDTH"]:
+            xPos = params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]-params["BUBBLE_WIDTH"]
+
+        # initially assume below word then move above word if too low
+        yPos = self.word.yPos2+params["BUBBLE_VERTICAL_SEPARATION"]
+        if yPos+params["BUBBLE_HEIGHT"] > 0.95*params["WINDOW_HEIGHT"]:
+            yPos = self.word.yPos-params["BUBBLE_VERTICAL_SEPARATION"]-params["BUBBLE_HEIGHT"]
+
+        return xPos, yPos
+
+
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
