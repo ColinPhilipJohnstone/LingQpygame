@@ -187,7 +187,8 @@ class Lesson:
             pos = pygame.mouse.get_pos()
 
             # if a word bubble is being shown and this click is outside its box then this should
-            # cause it to stop being displayed
+            # cause it to stop being displayed 
+            # don't return in this case since click could be on something else intentionally
             if self.displayBubble:
                 if not self.bubble.isIn(pos):
                     self.bubble.word.toogleSelected()

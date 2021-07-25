@@ -39,6 +39,18 @@ params["PARAGRAPH_SPACE"] = int(params["LINE_SPACE"]*1.5) # paragraph spacing fo
 params["PARAGRAPH_STRING"] = '</p>' # string to indicate paragraph breaks
 
 
+# bubble properties
+params["BUBBLE_WIDTH"] = int(params["WINDOW_WIDTH"]/1.7)
+params["BUBBLE_HEIGHT"] = int(params["BUBBLE_WIDTH"]/1.8)
+params["BUBBLE_MARGIN"] = int(params["BUBBLE_WIDTH"]/20.0)
+params["FONT_SIZE_BUBBLE_TERM"] = 20
+params["FONT_SIZE_BUBBLE_HINT"] = 15
+params["BUBBLE_HINT_SPACING"] = 30
+params["BUBBLE_STATUS_WIDTH"] = int(min(50,(params["BUBBLE_WIDTH"]-2*params["BUBBLE_MARGIN"])/6.0))
+params["BUBBLE_STATUS_HEIGHT"] = params["BUBBLE_STATUS_WIDTH"]
+params["BUBBLE_MAX_HINTS"] = 3
+params["BUBBLE_OPEN_TIME"] = 3.0
+
 # lesson layout
 params["LESSON_BACKGROUND_COLOR"] = (178,190,189)   # background color for the lesson
 
