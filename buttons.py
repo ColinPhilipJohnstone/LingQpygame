@@ -109,7 +109,8 @@ class InvisibleButton():
         pass
         
 class TextButton():
-    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,outlineColor=None,outlineThick=1,backgroundSizeFactor=1.0):
+    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,
+                outlineColor=None,outlineThick=1,backgroundSizeFactor=1.0,backgroundSize=None):
         '''Takes text string, fontsize, and position and returns button object'''
 
         # save input parameters
@@ -134,8 +135,13 @@ class TextButton():
             self.hasBackground = True
             self.drawBackground = True
             self.backgroundColor = backgroundColor
-            dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
-            dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
+            # get extra padding on background size
+            if backgroundSize is not None:
+                dx = (backgroundSize[0]-self.xSize)/2
+                dy = (backgroundSize[1]-self.ySize)/2
+            else:
+                dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
+                dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
             self.backgroundRect = pygame.Rect(self.xPos-dx,self.yPos-dy,self.xSize+2*dx,self.ySize+2*dy)
 
         # setup outline if desired
@@ -146,8 +152,13 @@ class TextButton():
             self.drawOutline = True
             self.outlineColor = outlineColor
             self.outlineThick = outlineThick
-            dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
-            dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
+            # get extra padding on background size
+            if backgroundSize is not None:
+                dx = (backgroundSize[0]-self.xSize)/2
+                dy = (backgroundSize[1]-self.ySize)/2
+            else:
+                dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
+                dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
             self.outlineRect = pygame.Rect(self.xPos-dx,self.yPos-dy,self.xSize+2*dx,self.ySize+2*dy)
 
     def move(self,pos):
@@ -325,7 +336,7 @@ class WordBubble():
                                 params["BUBBLE_STATUS_FONTSIZE"],
                                 outlineColor=params["HINT_OUTLINE_COLOR"],
                                 outlineThick=params["HINT_OUTLINE_THICK"],
-                                backgroundSizeFactor=params["HINT_BACKGROUND_SIZE_FACTOR"])
+                                backgroundSize=(params["BUBBLE_STATUS_WIDTH"],params["BUBBLE_STATUS_HEIGHT"]))
         self.items.append(xButton)
         
         # K button
@@ -336,7 +347,7 @@ class WordBubble():
                                 params["BUBBLE_STATUS_FONTSIZE"],
                                 outlineColor=params["HINT_OUTLINE_COLOR"],
                                 outlineThick=params["HINT_OUTLINE_THICK"],
-                                backgroundSizeFactor=params["HINT_BACKGROUND_SIZE_FACTOR"])
+                                backgroundSize=(params["BUBBLE_STATUS_WIDTH"],params["BUBBLE_STATUS_HEIGHT"]))
         self.items.append(kButton)
 
 
