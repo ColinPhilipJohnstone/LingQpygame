@@ -129,10 +129,21 @@ class Lesson:
     def setup_lesson_hud(self):
 
         # navigation buttons
-        self._leftButton = buttons.ImageButton((params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),"data/backward_arrow_icon.png",scale=params["ARROW_BUTTON_SCALING"],centered=True)
-        self._rightButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),"data/forward_arrow_icon.png",scale=params["ARROW_BUTTON_SCALING"],centered=True)
-        self._finishButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-params["MARGIN_HEIGHT"]/2.0),"data/tick_icon.png",scale=params["EXIT_BUTTON_SCALING"],centered=True)
-        self._exitButton = buttons.ImageButton((10,10),"data/close_icon.png",scale=params["EXIT_BUTTON_SCALING"] )
+        self._leftButton = buttons.ImageButton((params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),
+                                                "data/backward_arrow_icon.png",
+                                                scale=params["ARROW_BUTTON_SCALING"],
+                                                centered=True)
+        self._rightButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),
+                                                "data/forward_arrow_icon.png",
+                                                scale=params["ARROW_BUTTON_SCALING"],
+                                                centered=True)
+        self._finishButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-params["MARGIN_HEIGHT"]/2.0),
+                                                "data/tick_icon.png",
+                                                scale=params["EXIT_BUTTON_SCALING"],
+                                                centered=True)
+        self._exitButton = buttons.ImageButton((10,10),
+                                                "data/close_icon.png",
+                                                scale=params["EXIT_BUTTON_SCALING"] )
 
         return 
 

@@ -55,7 +55,7 @@ class ImageButton():
             self.xPosClick = self.xPos
             self.xPos2Click = self.xPos2
             self.yPosClick = self.yPos
-            self.yPos2Click = self.yPos
+            self.yPos2Click = self.yPos2
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
