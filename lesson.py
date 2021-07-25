@@ -51,6 +51,15 @@ class Lesson:
         
         return
 
+    def isUknown(self,word):
+        '''Takes word string, returns if is unknown'''
+        word in self.unknownList
+
+    def isLingq(self,word):
+        '''Takes word string, returns if is lingq'''
+        word in self.unknownList
+
+
     def setup_lesson_text(self):
         '''Sets up the text for a lesson'''
 
@@ -79,9 +88,9 @@ class Lesson:
             
             # determine if lingq or unknown
             status = None
-            if word in self.unknownList:
+            if self.isUknown(word):
                 status = 'unknown'
-            elif word in self.lingqs:
+            elif self.isLingq(word):
                 status = 'lingq'
 
             # get word button
