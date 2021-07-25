@@ -145,6 +145,7 @@ class Lesson:
         self._exitButton = buttons.ImageButton((10,10),
                                                 "data/close_icon.png",
                                                 scale=params["EXIT_BUTTON_SCALING"] )
+        self.showHudButton = buttons.InvisibleButton((0.0,0.0,params["WINDOW_WIDTH"],params["MARGIN_HEIGHT"]))
 
         return 
 
@@ -198,6 +199,11 @@ class Lesson:
             # test for exit button to go back to menu
             if self._exitButton.isIn(pos):
                 return shouldEnd, True, "menu"
+
+            # test for show hud button
+            if self.showHudButton.isIn(pos):
+                self.showHud = not self.showHud
+                return shouldEnd, True, loadLessonId
 
         return shouldEnd, shouldRender, loadLessonId
     

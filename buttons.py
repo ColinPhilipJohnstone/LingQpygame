@@ -67,6 +67,49 @@ class ImageButton():
         '''Draws button to a given surface'''
         surface.blit(self.image,(self.xPos,self.yPos))
 
+
+class InvisibleButton():
+    def __init__(self,pos,centered=False):
+        '''
+        Returns button object for invisible button
+        
+        Input parameters:-
+        pos - (x,y,xSize,ySize) tuple holding position and size of clickable area with x,y being position of top left
+        centered - set to True to use pos as position of center of button
+
+        '''
+
+        # set position
+        self.pos = (pos[0],pos[1])
+        self.size = (pos[2],pos[3])
+        
+        # if wanting position to be centered then reset position
+        if centered:
+            self.pos = ( int(self.pos[0]-self.size[0]/2.0) , int(self.pos[1]-self.size[1]/2.0) )
+
+        # set x and y position and size variables
+        self.xPos , self.yPos = self.pos
+        self.xSize , self.ySize = self.size
+        self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
+
+        # set x and y positions of the clickable area 
+        self.xPosClick = self.xPos
+        self.xPos2Click = self.xPos2
+        self.yPosClick = self.yPos
+        self.yPos2Click = self.yPos2
+
+    def isIn(self,pos):
+        '''Takes position tuple in format (x,y) and returns if this is in this button'''
+        isInX = (pos[0] >= self.xPosClick) and (pos[0] <= self.xPos2Click)
+        isInY = (pos[1] >= self.yPosClick) and (pos[1] <= self.yPos2Click) 
+        return (isInX and isInY)
+
+    def draw(self,surface):
+        '''Dummy function that does nothing'''
+        pass
+        
+
+
 class TextButton():
     def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None):
         '''Takes text string, fontsize, and position and returns button object'''
