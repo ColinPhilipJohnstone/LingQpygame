@@ -167,7 +167,7 @@ class Lesson:
     def shouldDrawFinish(self):
         '''Determines if the finish symbol should be present'''
 
-        if self.showHud and (self.nPageCurrent == self.nPages-1):
+        if self.nPageCurrent == self.nPages-1:
             return True
         else:
             return False
