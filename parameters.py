@@ -43,6 +43,7 @@ params["PARAGRAPH_STRING"] = '</p>' # string to indicate paragraph breaks
 params["BUBBLE_WIDTH"] = int(params["WINDOW_WIDTH"]/1.7)    # width of bubble
 params["BUBBLE_HEIGHT"] = int(params["BUBBLE_WIDTH"]/1.8)   # height of bubble                
 params["BUBBLE_VERTICAL_SEPARATION"] = 0.2*params["LINE_SPACE"] # distance between top/bottom of bubble ant top/bottom of word
+params["BUBBLE_MARGIN"] = int(params["BUBBLE_WIDTH"]/20.0) # size of the margin within a bubble
 params["BUBBLE_BACKGROUND_COLOR_LINGQ"] = (250,250,210)   # background color for bubble if lingq
 params["BUBBLE_BACKGROUND_COLOR_UNKNOWN"] = (178,255,255) # background color for bubble if unknown
 params["BUBBLE_BACKGROUND_COLOR_WORD"] = (178,255,255)    # background color for bubble if word
@@ -50,11 +51,15 @@ params["BUBBLE_OUTLINE_COLOR"] = (0,0,0)    # color for bubble outline
 params["BUBBLE_OUTLINE_WIDTH"] = 2    # width of bubble outline
 
 
-# bubble contents 
-params["BUBBLE_MARGIN"] = int(params["BUBBLE_WIDTH"]/20.0)
-params["FONT_SIZE_BUBBLE_TERM"] = 20
-params["FONT_SIZE_BUBBLE_HINT"] = 15
+# hint properties 
+params["BUBBLE_TERM_FONT_SIZE"] = 20
+params["BUBBLE_HINT_FONT_SIZE"] = 15
 params["BUBBLE_HINT_SPACING"] = 30
+params["HINT_BACKGROUND_COLOR"] = (255,255,255)
+params["HINT_OUTLINE_COLOR"] = (0,0,0)
+params["HINT_OUTLINE_THICK"] = 2
+params["HINT_BACKGROUND_SIZE_FACTOR"] = 1.3         # factor by which to increase the size of the hint buttons relative to text
+params["BUBBLE_STATUS_FONTSIZE"] = 40   # fontsize of the status, X, and K buttons in a bubble
 params["BUBBLE_STATUS_WIDTH"] = int(min(50,(params["BUBBLE_WIDTH"]-2*params["BUBBLE_MARGIN"])/6.0))
 params["BUBBLE_STATUS_HEIGHT"] = params["BUBBLE_STATUS_WIDTH"]
 params["BUBBLE_MAX_HINTS"] = 3

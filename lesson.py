@@ -21,8 +21,10 @@ class Lesson:
         self.unknownList , self.unknownIdDict = api.GetUnknownWords(lessonId)
         api.GetLingQHintsList(self.unknownList)
         api.GetLingQHintsList(self.lingqList)
+
+
         
-        print(self.lingqs)
+        print(api.unknown_hints)
 
         # setup text
         self.pageWordList, self.pageUnknownList, self.pageLingqList = self.setup_lesson_text()

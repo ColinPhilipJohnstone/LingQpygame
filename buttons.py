@@ -1,6 +1,7 @@
 
 import pygame
 from parameters import params
+import lingqAPI as api
 
 class ImageButton():
     def __init__(self,pos,filename,size=None,scale=None,centered=False,clickPos=None):
@@ -174,7 +175,7 @@ class TextButton():
         surface.blit(self.image,(self.xPos,self.yPos))
 
 class Word(TextButton):
-    def __init__(self,pos,text,term,status=None,lingq=None):
+    def __init__(self,pos,text,term,status=None):
         '''Sets up word button either as a normal word, an unknown word, or a lingq'''
 
         # save the basic term 
@@ -277,7 +278,7 @@ class WordBubble():
         '''Gets contents of a bubble'''
 
         # get term and start item list with it
-        self.term = TextButton((self.xPos+params['BUBBLE_MARGIN'],self.yPos+params['BUBBLE_MARGIN']), self.word.term, params['FONT_SIZE_BUBBLE_TERM'])
+        self.term = TextButton((self.xPos+params['BUBBLE_MARGIN'],self.yPos+params['BUBBLE_MARGIN']), self.word.term, params['BUBBLE_TERM_FONT_SIZE'])
         self.items = [self.term]
 
         if self.word.status == 'lingq':
@@ -287,23 +288,60 @@ class WordBubble():
             
     def getBubbleContentsLingq(self):
         '''Gets contents of a bubble for a lingq'''
-
-        # # number of hints to show
-        # nHints = len( lingq['hints'] )
-        # self.nHintsShow = min(nHints,params['BUBBLE_MAX_HINTS'])
-            
-        # # loop over hints and add each one
-        # xPosHint = self.xPos+2*params['BUBBLE_MARGIN']
-        # yPosHist = self.yCenter + 0.2*self.height
-        # for iHint in range(0,nHintsShow):
       
+# class TextButton():
+#     def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,outlineColor=None,outlineThick=1,backgroundSizeFactor=1.0):
 
-        pass
+        return
             
 
     def getBubbleContentsUnknown(self):
         '''Gets contents of a bubble for an unknown word'''
-        pass
+
+        # number of hints to show
+        hints = api.unknown_hints[self.word.term]
+        nHintsShow = min(len(hints),params['BUBBLE_MAX_HINTS'])
+            
+        # loop over hints and add each one
+        xPosHint = self.xPos+2*params['BUBBLE_MARGIN']
+        yPosHint = self.yPos + 0.2*self.ySize
+        for iHint in range(0,nHintsShow):
+            hintText = hints[iHint]['text'].replace('\n','')
+            hintButton = TextButton((xPosHint,yPosHint),
+                                    hintText,
+                                    params["BUBBLE_HINT_FONT_SIZE"],
+                                    backgroundColor=params["HINT_BACKGROUND_COLOR"],
+                                    outlineColor=params["HINT_OUTLINE_COLOR"],
+                                    outlineThick=params["HINT_OUTLINE_THICK"],
+                                    backgroundSizeFactor=params["HINT_BACKGROUND_SIZE_FACTOR"])
+            self.items.append(hintButton)
+            yPosHint += params['BUBBLE_HINT_SPACING']
+
+        # X button
+        xPosX = self.xPos2-params['BUBBLE_MARGIN']
+        yPosX = self.yPos2-params['BUBBLE_MARGIN']-params["BUBBLE_STATUS_HEIGHT"]
+        xButton = TextButton(  (xPosX,yPosX),
+                                "X",
+                                params["BUBBLE_STATUS_FONTSIZE"],
+                                outlineColor=params["HINT_OUTLINE_COLOR"],
+                                outlineThick=params["HINT_OUTLINE_THICK"],
+                                backgroundSizeFactor=params["HINT_BACKGROUND_SIZE_FACTOR"])
+        self.items.append(xButton)
+        
+        # K button
+        xPosK = xPosX-params["BUBBLE_STATUS_WIDTH"]
+        yPosK = yPosX
+        kButton = TextButton(  (xPosK,yPosK),
+                                "K",
+                                params["BUBBLE_STATUS_FONTSIZE"],
+                                outlineColor=params["HINT_OUTLINE_COLOR"],
+                                outlineThick=params["HINT_OUTLINE_THICK"],
+                                backgroundSizeFactor=params["HINT_BACKGROUND_SIZE_FACTOR"])
+        self.items.append(kButton)
+
+
+
+        return
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
@@ -320,4 +358,4 @@ class WordBubble():
         
         # draw items
         for item in self.items:
-            surface.blit(item.image, (item.xPos,item.yPos))
+            item.draw(surface)
