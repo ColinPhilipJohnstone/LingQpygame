@@ -4,8 +4,19 @@ from parameters import params
 import copy 
 
 class ImageButton():
-    def __init__(self,pos,filename,size=None,scale=None,centered=False):
-        '''Takes filename of image and returns button object for image'''
+    def __init__(self,pos,filename,size=None,scale=None,centered=False,clickPos=None):
+        '''
+        Takes filename of image and returns button object for image
+        
+        Input parameters:-
+        pos - tuple in form (x,y) of position of button, generally top left corner
+        filename - string with path of fle holding image to use to make button
+        size - tuple holding the size of the image, if None then use image size from file
+        scale - scaling factor for image size, if None then assumed 1, not used if size specified
+        centered - set to True to use pos as position of center of button
+        clickPos - (x,y,xSize,ySize) tuple holding position and size of clickable area, if None then assume image area
+
+        '''
 
         # set position
         self.pos = pos
@@ -34,10 +45,22 @@ class ImageButton():
         self.xSize , self.ySize = self.size
         self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
 
+        # set x and y positions of the clickable area 
+        if clickPos is not None:
+            self.xPosClick = clickPos[0]
+            self.xPos2Click = clickPos[1]
+            self.yPosClick = clickPos[0]+clickPos[2]
+            self.yPos2Click = clickPos[1]+clickPos[3]
+        else:
+            self.xPosClick = self.xPos
+            self.xPos2Click = self.xPos2
+            self.yPosClick = self.yPos
+            self.yPos2Click = self.yPos
+
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
-        isInX = (pos[0] >= self.xPos) and (pos[0] <= self.xPos2)
-        isInY = (pos[1] >= self.yPos) and (pos[1] <= self.yPos2) 
+        isInX = (pos[0] >= self.xPosClick) and (pos[0] <= self.xPos2Click)
+        isInY = (pos[1] >= self.yPosClick) and (pos[1] <= self.yPos2Click) 
         return (isInX and isInY)
 
     def draw(self,surface):
@@ -69,6 +92,15 @@ class TextButton():
             self.drawBackground = True
             self.backgroundColor = backgroundColor
             self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+
+
+        # dx = 0.5 * self.xSize * (clickAreaFactor[0]-1.0)
+        # dy = 0.5 * self.ySize * (clickAreaFactor[1]-1.0)
+        # self.xPosClick = self.xPos - dx
+        # self.xPos2Click = self.xPos2 + dx
+        # self.yPosClick = self.yPos - dy
+        # self.yPos2Click = self.yPos + dy
 
     def move(self,pos):
         '''Moves button to a new position'''
