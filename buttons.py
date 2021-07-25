@@ -14,7 +14,7 @@ class ImageButton():
         size - tuple holding the size of the image, if None then use image size from file
         scale - scaling factor for image size, if None then assumed 1, not used if size specified
         centered - set to True to use pos as position of center of button
-        clickPos - (x,y,xSize,ySize) tuple holding position and size of clickable area, if None then assume image area
+        clickPos - (x,y,xSize,ySize) tuple holding position and size of clickable area with x,y being position of top left, if None then assume image area
 
         '''
 
@@ -48,8 +48,8 @@ class ImageButton():
         # set x and y positions of the clickable area 
         if clickPos is not None:
             self.xPosClick = clickPos[0]
-            self.xPos2Click = clickPos[1]
-            self.yPosClick = clickPos[0]+clickPos[2]
+            self.xPos2Click = clickPos[0]+clickPos[2]
+            self.yPosClick = clickPos[1]
             self.yPos2Click = clickPos[1]+clickPos[3]
         else:
             self.xPosClick = self.xPos

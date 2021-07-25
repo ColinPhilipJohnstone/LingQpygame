@@ -67,7 +67,6 @@ class Lesson:
         # loop over all words in the text
         xLeft = params['MARGIN_WIDTH']
         yTop = params['MARGIN_HEIGHT']
-        nPage = 0
         for word in words:
         
             # check if this word is a paragraph indicator
@@ -132,11 +131,13 @@ class Lesson:
         self._leftButton = buttons.ImageButton((params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),
                                                 "data/backward_arrow_icon.png",
                                                 scale=params["ARROW_BUTTON_SCALING"],
-                                                centered=True)
+                                                centered=True,
+                                                clickPos=(0.0,params["MARGIN_HEIGHT"],params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-2*params["MARGIN_HEIGHT"]))
         self._rightButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]/2.0,params["WINDOW_HEIGHT"]/2.0),
                                                 "data/forward_arrow_icon.png",
                                                 scale=params["ARROW_BUTTON_SCALING"],
-                                                centered=True)
+                                                centered=True,
+                                                clickPos=(params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"],params["MARGIN_HEIGHT"],params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-2*params["MARGIN_HEIGHT"]))
         self._finishButton = buttons.ImageButton((params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"],params["WINDOW_HEIGHT"]-params["MARGIN_HEIGHT"]/2.0),
                                                 "data/tick_icon.png",
                                                 scale=params["EXIT_BUTTON_SCALING"],
@@ -150,7 +151,10 @@ class Lesson:
 
     def shouldDrawLeft(self):
         '''Determines if the left arrow should be present'''
-        return True
+        if self.nPageCurrent > 0:
+            return True
+        else:
+            return False
 
     def shouldDrawRight(self):
         '''Determines if the right arrow should be present'''
