@@ -216,10 +216,8 @@ class Word(TextButton):
         '''Turns on/off the outline showing selection'''
         self.drawOutline = not self.drawOutline
 
-
 def getTerm(string):
-  
-  """Takes string with word, returns string with punctuation removed and lowercase."""
+  '''Takes string with word, returns string with punctuation removed and lowercase.'''
   
   # Make sure there is at least one real letter in word and return -1 if not
   isWord = False
@@ -254,3 +252,31 @@ def getTerm(string):
     word = word[iStart:iEnd+1]
   
   return word
+
+
+class WordBubble():
+
+    def __init__(self,word):
+        '''Takes a Word object and sets up the hint bubble for it'''
+
+        # get position and size 
+        self.xPos = 10
+        self.yPos = 10
+        self.xSize = 100
+        self.ySize = 100
+        self.xPos2 = self.xPos+self.xSize
+        self.yPos2 = self.yPos+self.ySize
+
+        # get background rectangle
+        self.backgroundColor = (255,255,255)
+        self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+    def isIn(self,pos):
+        '''Takes position tuple in format (x,y) and returns if this is in this button'''
+        isInX = (pos[0] >= self.xPos) and (pos[0] <= self.xPos2)
+        isInY = (pos[1] >= self.yPos) and (pos[1] <= self.yPos2) 
+        return (isInX and isInY)
+
+    def draw(self,surface):
+        '''Draws button to a given surface'''
+        pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)

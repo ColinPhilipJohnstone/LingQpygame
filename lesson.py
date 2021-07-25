@@ -30,11 +30,11 @@ class Lesson:
         
         # setup initial state
         self.nPageCurrent = 0           # start on first page
-        self.displayBubble = None       # assume no bubble to display
+        self.displayBubble = False      # assume no bubble to display
+        self.bubble = None              # will hold the bubble object when there is one
         self.showHud = False            # assume not showing the hud
         self.clickingStatus = False     # assuming not clicking change status button
-        self.wordSelectBox = None       # assume no word select box to display 
-        self.BubbleTimer = 0            # make bubble timer as 0
+        self.bubbleTimer = 0            # make bubble timer as 0
         
         return
 
@@ -209,7 +209,8 @@ class Lesson:
             for word in self.pageWordList[self.nPageCurrent]:
                 if word.isIn(pos):
                     word.toogleSelected()
-
+                    self.displayBubble = True
+                    self.bubble = buttons.WordBubble(word)
                     return shouldEnd, True, loadLessonId
 
         return shouldEnd, shouldRender, loadLessonId
@@ -238,6 +239,10 @@ class Lesson:
         
         if self.shouldDrawExit():
             self._exitButton.draw(window)
+
+        # draw bubble if there is one
+        if self.displayBubble:
+            self.bubble.draw(window)
 
         # update display
         pygame.display.update()
