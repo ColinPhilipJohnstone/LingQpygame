@@ -3,6 +3,7 @@ from parameters import params
 import pygame
 import lingqAPI as api
 import buttons
+import copy 
 
 class Lesson:
 
@@ -21,6 +22,8 @@ class Lesson:
         api.GetLingQHintsList(self.unknownList)
         api.GetLingQHintsList(self.lingqList)
         
+        print(self.lingqs)
+
         # setup text
         self.pageWordList, self.pageUnknownList, self.pageLingqList = self.setup_lesson_text()
         self.nPages = len(self.pageWordList)
@@ -38,13 +41,13 @@ class Lesson:
         
         return
 
-    def isUnknown(self,word):
+    def isUnknown(self,term):
         '''Takes word string, returns if is unknown'''
-        return buttons.getTerm(word) in self.unknownList
+        return term in self.unknownList
 
-    def isLingq(self,word):
+    def isLingq(self,term):
         '''Takes word string, returns if is lingq'''
-        return buttons.getTerm(word) in self.lingqList
+        return term in self.lingqList
 
     def setup_lesson_text(self):
         '''Sets up the text for a lesson'''
@@ -75,15 +78,18 @@ class Lesson:
                 yTop += params["PARAGRAPH_SPACE"]
                 continue
             
+            # get corresponding term for word
+            term = getTerm(word)
+
             # determine if lingq or unknown
             status = None
-            if self.isUnknown(word):
+            if self.isUnknown(term):
                 status = 'unknown'
-            elif self.isLingq(word):
+            elif self.isLingq(term):
                 status = 'lingq'
 
             # get word button
-            wordButton = buttons.Word((xLeft,yTop),word,status=status)
+            wordButton = buttons.Word((xLeft,yTop),word,term,status=status)
         
             # check if need to move to next line 
             wordRight = xLeft + wordButton.xSize
@@ -255,3 +261,40 @@ class Lesson:
 
         # update display
         pygame.display.update()
+
+def getTerm(string):
+  '''Takes string with word, returns string with punctuation removed and lowercase.'''
+  
+  # Make sure there is at least one real letter in word and return -1 if not
+  isWord = False
+  for char in string:
+    if char.isalpha():
+      isWord = True
+  if not isWord:
+    return -1
+      
+  # Make deep copy of string 
+  word = copy.deepcopy(string)
+  
+  # Make word lower case
+  word = word.lower()
+  
+  # Check if need to shave characters off edges
+  if not ( word[0].isalpha() and word[-1].isalpha() ):
+    
+    # Loop forward and get first letter
+    for i in range(0,len(word),1):
+      if word[i].isalpha():
+        iStart = i
+        break
+    
+    # Loop backwards and get last letter
+    for i in range(len(word)-1,-1,-1):
+      if word[i].isalpha():
+        iEnd = i
+        break
+    
+    # Get new word
+    word = word[iStart:iEnd+1]
+  
+  return word

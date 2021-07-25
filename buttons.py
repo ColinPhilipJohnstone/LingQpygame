@@ -1,7 +1,6 @@
 
 import pygame
 from parameters import params
-import copy 
 
 class ImageButton():
     def __init__(self,pos,filename,size=None,scale=None,centered=False,clickPos=None):
@@ -175,11 +174,11 @@ class TextButton():
         surface.blit(self.image,(self.xPos,self.yPos))
 
 class Word(TextButton):
-    def __init__(self,pos,text,status=None):
+    def __init__(self,pos,text,term,status=None,lingq=None):
         '''Sets up word button either as a normal word, an unknown word, or a lingq'''
 
         # save the basic term 
-        self.term = getTerm(text)
+        self.term = term
 
         # how to set it up depends entirely on the status
         self.status = status
@@ -215,44 +214,6 @@ class Word(TextButton):
     def toogleSelected(self):
         '''Turns on/off the outline showing selection'''
         self.drawOutline = not self.drawOutline
-
-def getTerm(string):
-  '''Takes string with word, returns string with punctuation removed and lowercase.'''
-  
-  # Make sure there is at least one real letter in word and return -1 if not
-  isWord = False
-  for char in string:
-    if char.isalpha():
-      isWord = True
-  if not isWord:
-    return -1
-      
-  # Make deep copy of string 
-  word = copy.deepcopy(string)
-  
-  # Make word lower case
-  word = word.lower()
-  
-  # Check if need to shave characters off edges
-  if not ( word[0].isalpha() and word[-1].isalpha() ):
-    
-    # Loop forward and get first letter
-    for i in range(0,len(word),1):
-      if word[i].isalpha():
-        iStart = i
-        break
-    
-    # Loop backwards and get last letter
-    for i in range(len(word)-1,-1,-1):
-      if word[i].isalpha():
-        iEnd = i
-        break
-    
-    # Get new word
-    word = word[iStart:iEnd+1]
-  
-  return word
-
 
 class WordBubble():
 
@@ -322,11 +283,20 @@ class WordBubble():
         if self.word.status == 'lingq':
             self.getBubbleContentsLingq()
         else:
-            self.getBubbleContentsUnknown
+            self.getBubbleContentsUnknown()
             
     def getBubbleContentsLingq(self):
         '''Gets contents of a bubble for a lingq'''
 
+        # # number of hints to show
+        # nHints = len( lingq['hints'] )
+        # self.nHintsShow = min(nHints,params['BUBBLE_MAX_HINTS'])
+            
+        # # loop over hints and add each one
+        # xPosHint = self.xPos+2*params['BUBBLE_MARGIN']
+        # yPosHist = self.yCenter + 0.2*self.height
+        # for iHint in range(0,nHintsShow):
+      
 
         pass
             
