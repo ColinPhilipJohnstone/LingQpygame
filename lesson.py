@@ -151,22 +151,29 @@ class Lesson:
 
     def shouldDrawLeft(self):
         '''Determines if the left arrow should be present'''
-        if self.nPageCurrent > 0:
+        if self.showHud and (self.nPageCurrent > 0):
             return True
         else:
             return False
 
     def shouldDrawRight(self):
         '''Determines if the right arrow should be present'''
-        return True
+        if self.showHud and (self.nPageCurrent < self.nPages-1):
+            return True
+        else:
+            return False
 
     def shouldDrawFinish(self):
         '''Determines if the finish symbol should be present'''
-        return True
+
+        if self.showHud and (self.nPageCurrent == self.nPages-1):
+            return True
+        else:
+            return False
 
     def shouldDrawExit(self):
         '''Determines if the exit symbol should be present'''
-        return True
+        return self.showHud
 
     def onEvent(self,event):
         '''Handles what to do when something happens'''
