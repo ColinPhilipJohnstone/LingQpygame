@@ -283,6 +283,9 @@ class WordBubble():
         self.outlineWidth = params["BUBBLE_OUTLINE_WIDTH"]
         self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
+        # setup contents of bubble
+        self.getBubbleContents()
+
     def getBubblePosition(self):
         '''Gets position of top left corner of bubble'''
 
@@ -311,6 +314,11 @@ class WordBubble():
 
     def getBubbleContents(self):
         '''Gets contents of a bubble'''
+
+        # get term and start item list with it
+        self.term = TextButton((self.xPos+params['BUBBLE_MARGIN'],self.yPos+params['BUBBLE_MARGIN']), self.word.term, params['FONT_SIZE_BUBBLE_TERM'])
+        self.items = [self.term]
+
         if self.word.status == 'lingq':
             self.getBubbleContentsLingq()
         else:
@@ -318,6 +326,8 @@ class WordBubble():
             
     def getBubbleContentsLingq(self):
         '''Gets contents of a bubble for a lingq'''
+
+
         pass
             
 
@@ -333,5 +343,11 @@ class WordBubble():
 
     def draw(self,surface):
         '''Draws button to a given surface'''
+
+        # draw box
         pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)
         pygame.draw.rect(surface,self.outlineColor,self.outlineRect,self.outlineWidth)
+        
+        # draw items
+        for item in self.items:
+            surface.blit(item.image, (item.xPos,item.yPos))
