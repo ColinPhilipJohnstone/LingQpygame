@@ -208,8 +208,8 @@ class Lesson:
             # test for one of the lingqs on the page
             for lingq in self.pageLingqList[self.nPageCurrent]:
                 if lingq.isIn(pos):
-                    print("lingq: ",lingq.term)
-                    return shouldEnd, shouldRender, loadLessonId
+                    lingq.toogleSelected()
+                    return shouldEnd, True, loadLessonId
            
             # test for one of the unknown words on the page
             for word in self.pageUnknownList[self.nPageCurrent]:

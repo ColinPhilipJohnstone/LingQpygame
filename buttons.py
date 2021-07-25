@@ -108,10 +108,8 @@ class InvisibleButton():
         '''Dummy function that does nothing'''
         pass
         
-
-
 class TextButton():
-    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None):
+    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,outlineColor=None,outlineThick=1):
         '''Takes text string, fontsize, and position and returns button object'''
 
         # save input parameters
@@ -130,28 +128,33 @@ class TextButton():
         self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
 
         # setup background rectangle if desired
+        self.hasBackground = False
         self.drawBackground = False
         if backgroundColor is not None:
+            self.hasBackground = True
             self.drawBackground = True
             self.backgroundColor = backgroundColor
             self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
-
-
-        # dx = 0.5 * self.xSize * (clickAreaFactor[0]-1.0)
-        # dy = 0.5 * self.ySize * (clickAreaFactor[1]-1.0)
-        # self.xPosClick = self.xPos - dx
-        # self.xPos2Click = self.xPos2 + dx
-        # self.yPosClick = self.yPos - dy
-        # self.yPos2Click = self.yPos + dy
+        # setup outline if desired
+        self.hasOutline = False
+        self.drawOutline = False
+        if outlineColor is not None:
+            self.hasOutline = True
+            self.drawOutline = True
+            self.outlineColor = outlineColor
+            self.outlineThick = outlineThick
+            self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
     def move(self,pos):
         '''Moves button to a new position'''
         self.pos = pos
         self.xPos , self.yPos = self.pos
         self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
-        if self.drawBackground:
+        if self.hasBackground:
             self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+        if self.hasOutline:
+            self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
@@ -163,6 +166,8 @@ class TextButton():
         '''Draws button to a given surface'''
         if self.drawBackground:
             pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)
+        if self.drawOutline:
+            pygame.draw.rect(surface,self.outlineColor,self.outlineRect,self.outlineThick)
         surface.blit(self.image,(self.xPos,self.yPos))
 
 class Word(TextButton):
@@ -176,13 +181,21 @@ class Word(TextButton):
         self.status = status
         if status == "unknown":
             # make an unknown word
-            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"])
+            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"],outlineColor=(0,0,0))
         elif status == "lingq":
             # make a lingq
-            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"])
+            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"],outlineColor=(0,0,0))
         else:
             # just assume normal word
-            super().__init__(pos,text,params["FONT_SIZE"])
+            super().__init__(pos,text,params["FONT_SIZE"],outlineColor=(0,0,0))
+
+        # set not to show the outline first
+        self.drawOutline = False
+
+    def toogleSelected(self):
+        '''Turns on/off the outline showing selection'''
+        self.drawOutline = not self.drawOutline
+
 
 def getTerm(string):
   
