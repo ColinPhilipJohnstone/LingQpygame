@@ -300,9 +300,6 @@ class WordBubble():
     def getBubbleContentsLingq(self):
         '''Gets contents of a bubble for a lingq'''
       
-# class TextButton():
-#     def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,outlineColor=None,outlineThick=1,backgroundSizeFactor=1.0):
-
         return
             
 
