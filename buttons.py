@@ -1,7 +1,7 @@
 
 import pygame
 from parameters import params
-import copy 
+import lingqAPI as api
 
 class ImageButton():
     def __init__(self,pos,filename,size=None,scale=None,centered=False,clickPos=None):
@@ -108,10 +108,9 @@ class InvisibleButton():
         '''Dummy function that does nothing'''
         pass
         
-
-
 class TextButton():
-    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None):
+    def __init__(self,pos,text,fontsize,italic=False,bold=False,color=(0,0,0),backgroundColor=None,
+                outlineColor=None,outlineThick=1,backgroundSizeFactor=1.0,backgroundSize=None):
         '''Takes text string, fontsize, and position and returns button object'''
 
         # save input parameters
@@ -130,28 +129,47 @@ class TextButton():
         self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
 
         # setup background rectangle if desired
+        self.hasBackground = False
         self.drawBackground = False
         if backgroundColor is not None:
+            self.hasBackground = True
             self.drawBackground = True
             self.backgroundColor = backgroundColor
-            self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+            # get extra padding on background size
+            if backgroundSize is not None:
+                dx = (backgroundSize[0]-self.xSize)/2
+                dy = (backgroundSize[1]-self.ySize)/2
+            else:
+                dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
+                dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
+            self.backgroundRect = pygame.Rect(self.xPos-dx,self.yPos-dy,self.xSize+2*dx,self.ySize+2*dy)
 
-
-
-        # dx = 0.5 * self.xSize * (clickAreaFactor[0]-1.0)
-        # dy = 0.5 * self.ySize * (clickAreaFactor[1]-1.0)
-        # self.xPosClick = self.xPos - dx
-        # self.xPos2Click = self.xPos2 + dx
-        # self.yPosClick = self.yPos - dy
-        # self.yPos2Click = self.yPos + dy
+        # setup outline if desired
+        self.hasOutline = False
+        self.drawOutline = False
+        if outlineColor is not None:
+            self.hasOutline = True
+            self.drawOutline = True
+            self.outlineColor = outlineColor
+            self.outlineThick = outlineThick
+            # get extra padding on background size
+            if backgroundSize is not None:
+                dx = (backgroundSize[0]-self.xSize)/2
+                dy = (backgroundSize[1]-self.ySize)/2
+            else:
+                dx = self.xSize*(backgroundSizeFactor-1.0)/2.0
+                dy = self.ySize*(backgroundSizeFactor-1.0)/2.0
+            self.outlineRect = pygame.Rect(self.xPos-dx,self.yPos-dy,self.xSize+2*dx,self.ySize+2*dy)
 
     def move(self,pos):
         '''Moves button to a new position'''
         self.pos = pos
         self.xPos , self.yPos = self.pos
         self.xPos2 , self.yPos2 = self.xPos+self.xSize , self.yPos+self.ySize
-        if self.drawBackground:
+        if self.hasBackground:
             self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+        if self.hasOutline:
+            self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
 
     def isIn(self,pos):
         '''Takes position tuple in format (x,y) and returns if this is in this button'''
@@ -163,61 +181,191 @@ class TextButton():
         '''Draws button to a given surface'''
         if self.drawBackground:
             pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)
+        if self.drawOutline:
+            pygame.draw.rect(surface,self.outlineColor,self.outlineRect,self.outlineThick)
         surface.blit(self.image,(self.xPos,self.yPos))
 
 class Word(TextButton):
-    def __init__(self,pos,text,status=None):
+    def __init__(self,pos,text,term,status=None):
         '''Sets up word button either as a normal word, an unknown word, or a lingq'''
 
         # save the basic term 
-        self.term = getTerm(text)
+        self.term = term
 
         # how to set it up depends entirely on the status
         self.status = status
         if status == "unknown":
             # make an unknown word
-            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"])
+            super().__init__(pos,
+                             text,params["FONT_SIZE"],
+                             backgroundColor=params["UNKNOWN_HIGHLIGHT_COLOR"],
+                             outlineColor=params["WORD_OUTLINE_COLOR"],
+                             outlineThick=params["WORD_OUTLINE_THICK"],
+                             backgroundSizeFactor=params["WORD_HIGHLIGHT_SIZE_FACTOR"])
         elif status == "lingq":
             # make a lingq
-            super().__init__(pos,text,params["FONT_SIZE"],backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"])
+            super().__init__(pos,
+                             text,
+                             params["FONT_SIZE"],
+                             backgroundColor=params["LINGQ_HIGHLIGHT_COLOR_1"],
+                             outlineColor=params["WORD_OUTLINE_COLOR"],
+                             outlineThick=params["WORD_OUTLINE_THICK"],
+                             backgroundSizeFactor=params["WORD_HIGHLIGHT_SIZE_FACTOR"])
         else:
             # just assume normal word
-            super().__init__(pos,text,params["FONT_SIZE"])
+            super().__init__(pos,
+                             text,
+                             params["FONT_SIZE"],
+                             outlineColor=params["WORD_OUTLINE_COLOR"],
+                             outlineThick=params["WORD_OUTLINE_THICK"],
+                             backgroundSizeFactor=params["WORD_HIGHLIGHT_SIZE_FACTOR"])
 
-def getTerm(string):
-  
-  """Takes string with word, returns string with punctuation removed and lowercase."""
-  
-  # Make sure there is at least one real letter in word and return -1 if not
-  isWord = False
-  for char in string:
-    if char.isalpha():
-      isWord = True
-  if not isWord:
-    return -1
+        # set not to show the outline first
+        self.drawOutline = False
+
+    def toogleSelected(self):
+        '''Turns on/off the outline showing selection'''
+        self.drawOutline = not self.drawOutline
+
+class WordBubble():
+
+    def __init__(self,word):
+        '''Takes a Word object and sets up the hint bubble for it'''
+
+        # save the corresponding word object
+        self.word = word
+
+        # get position and size 
+        self.xSize = params["BUBBLE_WIDTH"]
+        self.ySize = params["BUBBLE_HEIGHT"]
+        self.xPos, self.yPos = self.getBubblePosition()
+        self.xPos2 = self.xPos+self.xSize
+        self.yPos2 = self.yPos+self.ySize
+
+        # get background rectangle
+        if word.status == 'lingq':
+            self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_LINGQ"]
+        elif word.status == 'unknown':
+            self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_UNKNOWN"]
+        else:
+            self.backgroundColor = params["BUBBLE_BACKGROUND_COLOR_WORD"]
+        self.backgroundRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+        # get outline
+        self.outlineColor = params["BUBBLE_OUTLINE_COLOR"]
+        self.outlineWidth = params["BUBBLE_OUTLINE_WIDTH"]
+        self.outlineRect = pygame.Rect(self.xPos,self.yPos,self.xSize,self.ySize)
+
+        # setup contents of bubble
+        self.getBubbleContents()
+
+    def getBubblePosition(self):
+        '''Gets position of top left corner of bubble'''
+
+        # determine x position
+
+        # initially assume to the right of the word so left side of bubble at middle point of word
+        # then check if it is too close to edge
+        xPos = self.word.xPos+0.5*self.word.xSize
+        if xPos+params["BUBBLE_WIDTH"] > 0.95*params["WINDOW_WIDTH"]:
+            xPos += -params["BUBBLE_WIDTH"]
+
+        # move bubble to right if off left side of screen
+        if xPos < params["MARGIN_WIDTH"]:
+            xPos = params["MARGIN_WIDTH"]
+
+        # move bubble to left if off right side of screen
+        if xPos+params["BUBBLE_WIDTH"] > params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]:
+            xPos = params["WINDOW_WIDTH"]-params["MARGIN_WIDTH"]-params["BUBBLE_WIDTH"]
+
+        # initially assume below word then move above word if too low
+        yPos = self.word.yPos2+params["BUBBLE_VERTICAL_SEPARATION"]
+        if yPos+params["BUBBLE_HEIGHT"] > 0.95*params["WINDOW_HEIGHT"]:
+            yPos = self.word.yPos-params["BUBBLE_VERTICAL_SEPARATION"]-params["BUBBLE_HEIGHT"]
+
+        return xPos, yPos
+
+    def getBubbleContents(self):
+        '''Gets contents of a bubble'''
+
+        # get term and start item list with it
+        self.term = TextButton((self.xPos+params['BUBBLE_MARGIN'],self.yPos+params['BUBBLE_MARGIN']), self.word.term, params['BUBBLE_TERM_FONT_SIZE'])
+        self.items = [self.term]
+
+        if self.word.status == 'lingq':
+            self.getBubbleContentsLingq()
+        else:
+            self.getBubbleContentsUnknown()
+            
+    def getBubbleContentsLingq(self):
+        '''Gets contents of a bubble for a lingq'''
       
-  # Make deep copy of string 
-  word = copy.deepcopy(string)
-  
-  # Make word lower case
-  word = word.lower()
-  
-  # Check if need to shave characters off edges
-  if not ( word[0].isalpha() and word[-1].isalpha() ):
-    
-    # Loop forward and get first letter
-    for i in range(0,len(word),1):
-      if word[i].isalpha():
-        iStart = i
-        break
-    
-    # Loop backwards and get last letter
-    for i in range(len(word)-1,-1,-1):
-      if word[i].isalpha():
-        iEnd = i
-        break
-    
-    # Get new word
-    word = word[iStart:iEnd+1]
-  
-  return word
+        return
+            
+
+    def getBubbleContentsUnknown(self):
+        '''Gets contents of a bubble for an unknown word'''
+
+        # number of hints to show
+        hints = api.unknown_hints[self.word.term]
+        nHintsShow = min(len(hints),params['BUBBLE_MAX_HINTS'])
+            
+        # loop over hints and add each one
+        xPosHint = self.xPos+2*params['BUBBLE_MARGIN']
+        yPosHint = self.yPos + 0.2*self.ySize
+        for iHint in range(0,nHintsShow):
+            hintText = hints[iHint]['text'].replace('\n','')
+            hintButton = TextButton((xPosHint,yPosHint),
+                                    hintText,
+                                    params["BUBBLE_HINT_FONT_SIZE"],
+                                    backgroundColor=params["HINT_BACKGROUND_COLOR"],
+                                    outlineColor=params["HINT_OUTLINE_COLOR"],
+                                    outlineThick=params["HINT_OUTLINE_THICK"],
+                                    backgroundSizeFactor=params["HINT_BACKGROUND_SIZE_FACTOR"])
+            self.items.append(hintButton)
+            yPosHint += params['BUBBLE_HINT_SPACING']
+
+        # X button
+        xPosX = self.xPos2-params['BUBBLE_MARGIN']-params["BUBBLE_STATUS_WIDTH"]
+        yPosX = self.yPos2-params['BUBBLE_MARGIN']-params["BUBBLE_STATUS_HEIGHT"]
+        xButton = TextButton(  (xPosX,yPosX),
+                                "X",
+                                params["BUBBLE_STATUS_FONTSIZE"],
+                                backgroundColor = params["HINT_BACKGROUND_COLOR"],
+                                outlineColor=params["HINT_OUTLINE_COLOR"],
+                                outlineThick=params["HINT_OUTLINE_THICK"],
+                                backgroundSize=(params["BUBBLE_STATUS_WIDTH"],params["BUBBLE_STATUS_HEIGHT"]))
+        self.items.append(xButton)
+        
+        # K button
+        xPosK = xPosX-params["BUBBLE_STATUS_WIDTH"]
+        yPosK = yPosX
+        kButton = TextButton(  (xPosK,yPosK),
+                                "K",
+                                params["BUBBLE_STATUS_FONTSIZE"],
+                                backgroundColor = params["HINT_BACKGROUND_COLOR"],
+                                outlineColor=params["HINT_OUTLINE_COLOR"],
+                                outlineThick=params["HINT_OUTLINE_THICK"],
+                                backgroundSize=(params["BUBBLE_STATUS_WIDTH"],params["BUBBLE_STATUS_HEIGHT"]))
+        self.items.append(kButton)
+
+
+
+        return
+
+    def isIn(self,pos):
+        '''Takes position tuple in format (x,y) and returns if this is in this button'''
+        isInX = (pos[0] >= self.xPos) and (pos[0] <= self.xPos2)
+        isInY = (pos[1] >= self.yPos) and (pos[1] <= self.yPos2) 
+        return (isInX and isInY)
+
+    def draw(self,surface):
+        '''Draws button to a given surface'''
+
+        # draw box
+        pygame.draw.rect(surface,self.backgroundColor,self.backgroundRect)
+        pygame.draw.rect(surface,self.outlineColor,self.outlineRect,self.outlineWidth)
+        
+        # draw items
+        for item in self.items:
+            item.draw(surface)

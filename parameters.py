@@ -23,11 +23,14 @@ params["EXIT_BUTTON_SCALING"] = 0.1     # size of exit button relative to image 
 params["ARROW_BUTTON_SCALING"] = 0.15   # size of arrows relative to image sizes
 
 # word highlighting options
-params["LINGQ_HIGHLIGHT_COLOR_1"] = (255,255,0)
+params["LINGQ_HIGHLIGHT_COLOR_1"] = (255,255,0)     # color for lingq highlight background
 params["LINGQ_HIGHLIGHT_COLOR_2"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_3"] = (255,255,0)
 params["LINGQ_HIGHLIGHT_COLOR_4"] = (255,255,0)
-params["UNKNOWN_HIGHLIGHT_COLOR"] = (172,229,238)
+params["UNKNOWN_HIGHLIGHT_COLOR"] = (172,229,238)   # color for unknown word highlight background
+params["WORD_OUTLINE_COLOR"] = (255,0,0)            # color for outline of selected word
+params["WORD_OUTLINE_THICK"] = 2                    # thickness for outline of selected word
+params["WORD_HIGHLIGHT_SIZE_FACTOR"] = 1.05         # factor by which to increase the size of the word highlighting relative to text
 
 # lesson text
 params["FONT_SIZE"] = 20    # font size for lesson text
@@ -35,6 +38,32 @@ params["LINE_SPACE"] = 40   # line spacing for lesson text
 params["PARAGRAPH_SPACE"] = int(params["LINE_SPACE"]*1.5) # paragraph spacing for lesson text
 params["PARAGRAPH_STRING"] = '</p>' # string to indicate paragraph breaks
 
+
+# basic bubble properties
+params["BUBBLE_WIDTH"] = int(params["WINDOW_WIDTH"]/1.7)    # width of bubble
+params["BUBBLE_HEIGHT"] = int(params["BUBBLE_WIDTH"]/1.8)   # height of bubble                
+params["BUBBLE_VERTICAL_SEPARATION"] = 0.2*params["LINE_SPACE"] # distance between top/bottom of bubble ant top/bottom of word
+params["BUBBLE_MARGIN"] = int(params["BUBBLE_WIDTH"]/20.0) # size of the margin within a bubble
+params["BUBBLE_BACKGROUND_COLOR_LINGQ"] = (250,250,210)   # background color for bubble if lingq
+params["BUBBLE_BACKGROUND_COLOR_UNKNOWN"] = (178,255,255) # background color for bubble if unknown
+params["BUBBLE_BACKGROUND_COLOR_WORD"] = (178,255,255)    # background color for bubble if word
+params["BUBBLE_OUTLINE_COLOR"] = (0,0,0)    # color for bubble outline
+params["BUBBLE_OUTLINE_WIDTH"] = 2    # width of bubble outline
+
+
+# hint properties 
+params["BUBBLE_TERM_FONT_SIZE"] = 20
+params["BUBBLE_HINT_FONT_SIZE"] = 15
+params["BUBBLE_HINT_SPACING"] = 30
+params["HINT_BACKGROUND_COLOR"] = (255,255,255)
+params["HINT_OUTLINE_COLOR"] = (0,0,0)
+params["HINT_OUTLINE_THICK"] = 2
+params["HINT_BACKGROUND_SIZE_FACTOR"] = 1.3         # factor by which to increase the size of the hint buttons relative to text
+params["BUBBLE_STATUS_FONTSIZE"] = 40   # fontsize of the status, X, and K buttons in a bubble
+params["BUBBLE_STATUS_WIDTH"] = int(min(50,(params["BUBBLE_WIDTH"]-2*params["BUBBLE_MARGIN"])/6.0))
+params["BUBBLE_STATUS_HEIGHT"] = params["BUBBLE_STATUS_WIDTH"]
+params["BUBBLE_MAX_HINTS"] = 3
+params["BUBBLE_OPEN_TIME"] = 3.0
 
 # lesson layout
 params["LESSON_BACKGROUND_COLOR"] = (178,190,189)   # background color for the lesson
